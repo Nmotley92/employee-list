@@ -15,7 +15,6 @@ describe('Employee', () => {
 
   it('getId() should return employee id number', () => {
     const employee= new (Employee)("John", 2, "john@gmail.com");
-    // Letter was not originally visible
     expect(employee.getId()).toEqual(2);
   });
 
@@ -28,3 +27,4 @@ describe('Employee', () => {
     expect(employee.getRole()).toEqual("Employee");
   });
 });
+
