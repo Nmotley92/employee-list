@@ -1,6 +1,6 @@
 
-const Employee = require('./lib/employee');
-const Manager = require('./lib/manager');
+const Employee = require('../lib/employee');
+const Manager = require('../lib/manager');
 
 describe('Manager', () => {
   it('should set name, id, email, and officeNumber when instantiated', () => {

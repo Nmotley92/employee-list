@@ -1,5 +1,5 @@
-const Employee = require('./employee');
-const Intern = require('./intern');
+const Employee = require('../lib/employee');
+const Intern = require('../lib/intern');
 
 describe('Intern', () => {
   it('should set name, id, email, and school when instantiated', () => {
