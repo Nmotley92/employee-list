@@ -1,38 +1,69 @@
 const inquirer = require('inquirer');
-const fs = require('fs');
 const Employee = require('./lib/employee');
 const Engineer = require('./lib/engineer');
 const Manager = require('./lib/manager');
 const Intern = require('./lib/intern');
+const renderHTML = require('./src/html-layout');
 
-
+// stores the team members made so far
 const team = [];
+// stores Id numbers that are being used
+idNumbersInUse=[];
 
+// strats the Manager prompts
 const promptManager = () => {
   return inquirer.prompt([
     {
       type: 'input',
       name: 'name',
-      message: "What is the team manager's name?"
+      message: "What is the team manager's name?",
+      validate: (answer) => {
+        if (answer !== '') {
+          return true;
+        }
+        return 'Please enter at least one character.';
+      },
     },
     {
       type: 'input',
       name: 'id',
-      message: "What is the team manager's employee ID?"
+      message: "What is the team manager's employee ID?",
+      validate: (answer) => {
+        const pass = answer.match(/^[1-9]\d*$/);
+        if (pass) {
+          return true;
+        }
+        return 'Please enter a positive number greater than zero.';
+      },
     },
     {
       type: 'input',
       name: 'email',
-      message: "What is the team manager's email address?"
+      message: "What is the team manager's email address?",
+      validate: (answer) => {
+        const pass = answer.match(/\S+@\S+\.\S+/);
+        if (pass) {
+          return true;
+        }
+        return 'Please enter a valid email address.';
+      },
     },
     {
       type: 'input',
       name: 'officeNumber',
-      message: "What is the team manager's office number?"
+      message: "What is the team manager's office number?",
+      validate: (answer) => {
+        const pass = answer.match(/^[1-9]\d*$/);
+        if (pass) {
+          return true;
+        }
+        return 'Please enter a positive number greater than zero.';
+      },
     }
   ]).then(answers => {
     const manager = new Manager(answers.name, answers.id, answers.email, answers.officeNumber);
     team.push(manager);
+    idNumbersInUse.push(answers.id);
     return promptMenu();
   });
 }
@@ -42,22 +73,52 @@ const promptEngineer = () => {
       {
         type: 'input',
         name: 'name',
-        message: "What is the engineer's name?"
+        message: "What is the engineer's name?",
+        validate: (answer) => {
+          if (answer !== '') {
+            return true;
+          }
+          return 'Please enter at least one character.';
+        },
       },
       {
         type: 'input',
         name: 'id',
-        message: "What is the engineer's employee ID?"
+        message: "What is the engineer's employee ID?",
+        validate: (answer) => {
+          const pass = answer.match(/^[1-9]\d*$/);
+          if (pass) {
+            if (idNumbersInUse.includes(answer)) {
+              return 'This ID is already taken. Please enter a different number.';
+            } else {
+              return true;
+            }
+          }
+          return 'Please enter a positive number greater than zero.';
+        },
       },
       {
         type: 'input',
         name: 'email',
-        message: "What is the engineer's email address?"
+        message: "What is the engineer's email address?",
+        validate: (answer) => {
+          const pass = answer.match(/\S+@\S+\.\S+/);
+          if (pass) {
+            return true;
+          }
+          return 'Please enter a valid email address.';
+        },
       },
       {
         type: 'input',
         name: 'github',
-        message: "What is the engineer's GitHub username?"
+        message: "What is the engineer's GitHub username?",
+        validate: (answer) => {
+          if (answer !== '') {
+            return true;
+          }
+          return 'Please enter at least one character.';
+        },
       }
     ]).then(answers => {
       const engineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
@@ -71,22 +132,52 @@ const promptEngineer = () => {
       {
         type: 'input',
         name: 'name',
-        message: "What is the intern's name?"
+        message: "What is the intern's name?",
+        validate: (answer) => {
+          if (answer !== '') {
+            return true;
+          }
+          return 'Please enter at least one character.';
+        },
       },
       {
         type: 'input',
         name: 'id',
-        message: "What is the intern's employee ID?"
+        message: "What is the intern's employee ID?",
+        validate: (answer) => {
+          const pass = answer.match(/^[1-9]\d*$/);
+          if (pass) {
+            if (idNumbersInUse.includes(answer)) {
+              return 'This ID is already taken. Please enter a different number.';
+            } else {
+              return true;
+            }
+          }
+          return 'Please enter a positive number greater than zero.';
+        },
       },
       {
         type: 'input',
         name: 'email',
-        message: "What is the intern's email address?"
+        message: "What is the intern's email address?",
+        validate: (answer) => {
+          const pass = answer.match(/\S+@\S+\.\S+/);
+          if (pass) {
+            return true;
+          }
+          return 'Please enter a valid email address.';
+        },
       },
       {
         type: 'input',
         name: 'school',
-        message: "What school is the intern attending?"
+        message: "What school is the intern attending?",
+        validate: (answer) => {
+          if (answer !== '') {
+            return true;
+          }
+          return 'Please enter at least one character.';
+        },
       }
     ]).then(answers => {
       const intern = new Intern(answers.name, answers.id, answers.email, answers.school);
@@ -94,47 +185,7 @@ const promptEngineer = () => {
       return promptMenu();
     });
   }
-const renderHTML = (team) => {
-    const html = `
-    <!DOCTYPE html>
-    <html>
-    <head>
 
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="./dist/style.css" />
-    <title>My Team</title>
-      
-    </head>
-    <header>
-        <h1>My Team</h1>
-    </header>
-    <body>
-        <div class="container">
-
-      ${team.map(member => {
-        return `
-          <div class="card">
-            <div class="card-header">
-                <h3>${member.name}</h3>
-                <p>${member.getRole()}</p>
-            </div>
-            <p>ID: ${member.id}</p>
-            <p>Email: <a href="mailto:${member.email}">${member.email}</a></p>
-            ${member.getRole() === 'Manager' ? `<p>Office number: ${member.officeNumber}</p>` : ''}
-            ${member.getRole() === 'Engineer' ? `<p>GitHub: <a href="https://github.com/${member.github}" target="_blank">${member.github}</a></p>` : ''}
-            ${member.getRole() === 'Intern' ? `<p>School: ${member.school}</p>` : ''}
-          </div>
-          
-        `
-      }).join('')}
-      </div>
-    </body>
-    </html>
-    `;
-    fs.writeFileSync('index.html', html);
-    console.log('HTML file generated successfully!');
-  }
 const promptMenu = () => {
   return inquirer.prompt([
     {

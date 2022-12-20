@@ -10,7 +10,7 @@ describe('Employee', () => {
 
   it('getName() should return the employee name', () => {
    const employee= new (Employee)("John", 2, "john@gmail.com");
-   expect(employee.getName().toEqual("John"));
+   expect(employee.getName()).toEqual("John");
   });
 
   it('getId() should return employee id number', () => {
