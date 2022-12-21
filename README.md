@@ -21,8 +21,7 @@
 	<a href="#tech-stack">Tech Stack</a> •
 	<a href="#installation">Installation</a> •
 	<a href="#usage">Usage</a> • 
-    <a href="visuals">Visuals</a>
-    <a href="#link">Link</a>
+        <a href="#visuals">Visuals</a> • 
 	<a href="#contact">Contact</a>
     
 </p>
