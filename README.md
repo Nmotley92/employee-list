@@ -45,6 +45,13 @@ To run this project
 node index.js
 ```
 ## Visuals
+Tests video 
+[tests.webm](https://user-images.githubusercontent.com/114119193/208788269-9109de49-f874-40e8-91ae-6ecd73ecb977.webm)
+
+Finish HTML example
+<img width="821" alt="Finished HTML screenshot" src="https://user-images.githubusercontent.com/114119193/208790097-0fecbfae-32d6-45b4-91db-32bad3e38c50.png">
+
+
 
 
 
